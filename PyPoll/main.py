@@ -53,7 +53,10 @@ with open(txtpath, "w", newline="") as txtfile:
     txtfile.write("--------------------------\n")
     txtfile.write(f"Total Votes: {(totvotes)}\n")
     txtfile.write("--------------------------\n")
-    txtfile.write(f"{key}: {cand_percentage} ({cand_vote_total})\n")
+    for key in cand_votes:
+        cand_vote_total = cand_votes[key]
+        cand_percentage = "{:.3%}".format(cand_vote_total / totvotes)
+        txtfile.write(f"{key}: {cand_percentage} ({cand_vote_total})\n")
     txtfile.write("--------------------------\n")
     txtfile.write(f"Winner: {winner}\n")
     txtfile.write("--------------------------\n")

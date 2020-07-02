@@ -2,10 +2,10 @@ import os
 import csv
 
 
-bank_csv = os.path.join("Resources", "election_data.csv")
+election_csv = os.path.join("Resources", "election_data.csv")
 
 # Open and read csv
-with open(bank_csv) as csvfile:
+with open(election_csv) as csvfile:
     csv_reader = csv.reader(csvfile, delimiter=",")
 
     # Read the header row first
@@ -15,49 +15,45 @@ with open(bank_csv) as csvfile:
     print("--------------------------")
     
     # Define variables
-    wordcount1 = 0
-    candidate1 = "Khan"
-    wordcount2 = 0
-    candidate2 = "O'Tooley"
-    wordcount3 = 0
-    candidate3 = "Li"
-    wordcount4 = 0
-    candidate4 = "Correy"
-    num_rows = 0
-    name = 0
-    votes = 0
-    candlist = []
+    totvotes = 0
+    cand_list = []
+    cand_votes = {}
+    all_keys = []
+    all_items = []
+    
 
     for row in csv_reader:
-        num_rows += 1
+        totvotes += 1
         name = str(row[2])
-        candlist.append(name)
-        if candidate1 in row[2]:
-            wordcount1 += 1
-        if candidate2 in row[2]:
-            wordcount2 += 1
-        if candidate3 in row[2]:
-            wordcount3 += 1
-        if candidate4 in row[2]:
-            wordcount4 += 1
-    percentage1 = (wordcount1 / num_rows) * 100
-    percentage2 = (wordcount2 / num_rows) * 100
-    percentage3 = (wordcount3 / num_rows) * 100
-    percentage4 = (wordcount4 / num_rows) * 100
-    candidates = str(set(candlist))
-    print(f"Total Votes: {(num_rows)}")
+    # loop through all candidates
+        if name not in cand_list:
+    # add it to the list of candidates
+            cand_list.append(name)
+            cand_votes[name] = 0
+    # begin tracking candidate's voter count
+        else:
+            cand_votes[name] = cand_votes[name] + 1
+    print(f"Total Votes: {(totvotes)}")
+    print("--------------------------")  
+    for key in cand_votes:
+        cand_vote_total = cand_votes[key]
+        cand_percentage = "{:.3%}".format(cand_vote_total / totvotes)
+        print(f"{key}: {cand_percentage} ({cand_vote_total})")
     print("--------------------------")
-    # Switch to printing these to dictionaires
-    print(candidate1, percentage1, wordcount1)
-    print(candidate2, percentage2, wordcount2)
-    print(candidate3, percentage3, wordcount3)
-    print(candidate4, percentage4, wordcount4)
-    
-    print("--------------------------")
-    popularvotes = {
-        "Khan": wordcount1,
-        "O'Tooley": wordcount2,
-        "Li": wordcount3,
-        "Correy": wordcount4
-        }
-    print(f"Winner: {max(popularvotes, key = popularvotes.get)}")
+winner = max(cand_votes, key=cand_votes.get)
+print(f"Winner: {winner}")
+print("--------------------------")
+
+# Textfile path
+txtpath = os.path.join('analysis', "analysis.txt")
+
+    # Write to text file
+with open(txtpath, "w", newline="") as txtfile:
+    txtfile.write("Election Results\n")
+    txtfile.write("--------------------------\n")
+    txtfile.write(f"Total Votes: {(totvotes)}\n")
+    txtfile.write("--------------------------\n")
+    txtfile.write(f"{key}: {cand_percentage} ({cand_vote_total})\n")
+    txtfile.write("--------------------------\n")
+    txtfile.write(f"Winner: {winner}\n")
+    txtfile.write("--------------------------\n")

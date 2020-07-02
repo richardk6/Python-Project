@@ -38,8 +38,23 @@ with open(bank_csv) as csvfile:
             min_profit[0] = row[0]
             min_profit[1] = change
     averagechange = sum(avelist[1:]) / (len(avelist) - 1)
+    roundaveragechange = "{0:.2f}".format(averagechange)
     print(f"Total Months: {(num_rows)}")
     print(f"Total of Profit/Losses: ${(total)}")
-    print(f"Average Change: {averagechange}")
+    print(f"Average Change: {(roundaveragechange)}")
     print(f"Greatest Increase in Profits: {max_profit[0], max_profit[1]}")
     print(f"Greatest Decrease in Profits: {min_profit[0], min_profit[1]}")
+
+    # Textfile path
+    txtpath = os.path.join('analysis', "analysis.txt")
+
+    # Write to text file
+    with open(txtpath, "w", newline="") as txtfile:
+        txtfile.write("Financial Analysis\n")
+        txtfile.write("--------------------------\n")
+        txtfile.write(f"Total Months: {(num_rows)}\n")
+        txtfile.write(f"Total of Profit/Losses: ${(total)}\n")
+        txtfile.write(f"Total of Profit/Losses: ${(total)}\n")
+        txtfile.write(f"Average Change: {(roundaveragechange)}\n")
+        txtfile.write(f"Greatest Increase in Profits: {max_profit[0], max_profit[1]}\n")
+        txtfile.write(f"Greatest Decrease in Profits: {min_profit[0], min_profit[1]}\n")

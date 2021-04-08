@@ -1,2 +1,2 @@
-# python-challenge
-This is python challenge for Homework 3
+# Python-Project
+Python Project
